@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"git.atix.de/tkc/talks/jaeger-tracing/cmd/monitoring"
+	"github.com/DrNaughtyDog/golang-tracing-monitoring/cmd/monitoring"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"

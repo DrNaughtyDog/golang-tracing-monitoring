@@ -1,4 +1,4 @@
-module git.atix.de/tkc/talks/jaeger-tracing
+module github.com/DrNaughtyDog/golang-tracing-monitoring
 
 go 1.19
 
