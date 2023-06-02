@@ -1,0 +1,51 @@
+version: "3.9"  # optional since v1.27.0
+services:
+
+  gateway:
+    build: &build
+      context: .
+      args:
+        - GO_MAIN=./cmd/main.go
+      dockerfile: ./Dockerfile
+    volumes:
+    - ./cfg/gateway.yaml:/config.yaml:ro
+    ports:
+    - 8080:8080
+    - 2112:2112
+    networks:
+    - tracing
+
+  a:
+    build:
+      <<: *build
+    volumes:
+    - ./cfg/a.yaml:/config.yaml:ro
+    networks:
+    - tracing
+
+  b:
+    build:
+      <<: *build
+    volumes:
+    - ./cfg/b.yaml:/config.yaml:ro
+    networks:
+    - tracing
+
+  c:
+    build:
+      <<: *build
+    volumes:
+    - ./cfg/c.yaml:/config.yaml:ro
+    networks:
+    - tracing
+
+  d:
+    build:
+      <<: *build
+    volumes:
+    - ./cfg/d.yaml:/config.yaml:ro
+    networks:
+    - tracing
+
+networks:
+  tracing:
