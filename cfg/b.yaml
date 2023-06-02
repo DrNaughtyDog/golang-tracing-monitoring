@@ -1,0 +1,6 @@
+name: "joermungandr-b"
+port: 8080
+# minimum sleep duration is 1 second
+request-timeout-seconds: 30
+sleep-max-seconds: 10
+forward-urls:

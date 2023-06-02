@@ -1,0 +1,14 @@
+name: "gateway"
+port: 8080
+# minimum sleep duration is 1 second
+sleep-max-seconds: 5
+request-timeout-seconds: 30
+# 3 calls in sequence.
+# first calling 'a' and 'b' parallel
+# then calling 'c'
+# then calling 'd'
+forward-urls:
+- ? "a:8080"
+  ? "b:8080"
+- ? "c:8080"
+- ? "d:8080"
