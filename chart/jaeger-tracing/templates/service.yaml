@@ -1,0 +1,34 @@
+{{ range $k, $v := .Values.services }}
+{{ with $v }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $k }}
+  annotations:
+   prometheus.io/port: "2112"
+   prometheus.io/scrape: "true"
+  labels: &labels
+    {{- if .labels }}
+      {{- .label | nindent 4 }}
+    {{- end }}
+    app.kubernetes.io/name: {{ $k }}
+    app.kubernetes.io/instance: {{ $k }}-{{ $.Release.Name }}
+    app.kubernetes.io/version: {{ $.Chart.Version }}
+    app.kubernetes.io/component: {{ .type | default "passthrough" }}
+    app.kubernetes.io/part-of: {{ $.Chart.Name }}
+    app.kubernetes.io/managed-by: helm
+spec:
+  type: {{ (.service).type | default "ClusterIP" }}
+  ports:
+    - port: {{ (.service).port | default 80 }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ (.service).metricsport | default 2112 }}
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+  selector:
+    <<: *labels
+{{ end }}
+{{ end }}

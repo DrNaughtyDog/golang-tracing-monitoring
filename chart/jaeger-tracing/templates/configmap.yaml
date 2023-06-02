@@ -1,0 +1,23 @@
+{{ range $k, $v := .Values.services }}
+{{ with $v }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ $k }}
+  labels: &labels
+    app.kubernetes.io/name: {{ $k }}
+    app.kubernetes.io/instance: {{ $k }}-{{ $.Release.Name }}
+    app.kubernetes.io/version: {{ $.Chart.Version }}
+    app.kubernetes.io/component: {{ .type | default "passthrough" }}
+    app.kubernetes.io/part-of: {{ $.Chart.Name }}
+    app.kubernetes.io/managed-by: helm
+data:
+  config.yaml: |
+    name: {{ $k }}
+    forward-urls:
+      {{ toYaml .forwardUrls | nindent 6 }}
+    port: {{ (.container).port | default 8080 }}
+    sleep-max-seconds: {{ .sleepMaxSeconds | default 5 }}
+    request-timeout-seconds: {{ .requestTimeoutSeconds | default 30 }}
+{{ end }}
+{{ end }}
